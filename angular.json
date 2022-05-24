@@ -6,7 +6,7 @@
   "version": 1,
   "newProjectRoot": "projects",
   "projects": {
-    "treebob": {
+    "treepecan": {
       "projectType": "application",
       "schematics": {
         "@schematics/angular:component": {
@@ -16,25 +16,25 @@
           "strict": true
         }
       },
-      "root": "projects/treebob",
-      "sourceRoot": "projects/treebob/src",
-      "prefix": "bob",
+      "root": "projects/treepecan",
+      "sourceRoot": "projects/treepecan/src",
+      "prefix": "pcn",
       "architect": {
         "build": {
           "builder": "@angular-devkit/build-angular:browser",
           "options": {
-            "outputPath": "dist/treebob",
-            "index": "projects/treebob/src/index.html",
-            "main": "projects/treebob/src/main.ts",
-            "polyfills": "projects/treebob/src/polyfills.ts",
-            "tsConfig": "projects/treebob/tsconfig.app.json",
+            "outputPath": "dist/treepecan",
+            "index": "projects/treepecan/src/index.html",
+            "main": "projects/treepecan/src/main.ts",
+            "polyfills": "projects/treepecan/src/polyfills.ts",
+            "tsConfig": "projects/treepecan/tsconfig.app.json",
             "inlineStyleLanguage": "scss",
             "assets": [
-              "projects/treebob/src/favicon.ico",
-              "projects/treebob/src/assets"
+              "projects/treepecan/src/favicon.ico",
+              "projects/treepecan/src/assets"
             ],
             "styles": [
-              "projects/treebob/src/styles.scss"
+              "projects/treepecan/src/styles.scss"
             ],
             "scripts": []
           },
@@ -54,8 +54,8 @@
               ],
               "fileReplacements": [
                 {
-                  "replace": "projects/treebob/src/environments/environment.ts",
-                  "with": "projects/treebob/src/environments/environment.prod.ts"
+                  "replace": "projects/treepecan/src/environments/environment.ts",
+                  "with": "projects/treepecan/src/environments/environment.prod.ts"
                 }
               ],
               "outputHashing": "all"
@@ -75,10 +75,10 @@
           "builder": "@angular-devkit/build-angular:dev-server",
           "configurations": {
             "production": {
-              "browserTarget": "treebob:build:production"
+              "browserTarget": "treepecan:build:production"
             },
             "development": {
-              "browserTarget": "treebob:build:development"
+              "browserTarget": "treepecan:build:development"
             }
           },
           "defaultConfiguration": "development"
@@ -86,23 +86,23 @@
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
           "options": {
-            "browserTarget": "treebob:build"
+            "browserTarget": "treepecan:build"
           }
         },
         "test": {
           "builder": "@angular-devkit/build-angular:karma",
           "options": {
-            "main": "projects/treebob/src/test.ts",
-            "polyfills": "projects/treebob/src/polyfills.ts",
-            "tsConfig": "projects/treebob/tsconfig.spec.json",
-            "karmaConfig": "projects/treebob/karma.conf.js",
+            "main": "projects/treepecan/src/test.ts",
+            "polyfills": "projects/treepecan/src/polyfills.ts",
+            "tsConfig": "projects/treepecan/tsconfig.spec.json",
+            "karmaConfig": "projects/treepecan/karma.conf.js",
             "inlineStyleLanguage": "scss",
             "assets": [
-              "projects/treebob/src/favicon.ico",
-              "projects/treebob/src/assets"
+              "projects/treepecan/src/favicon.ico",
+              "projects/treepecan/src/assets"
             ],
             "styles": [
-              "projects/treebob/src/styles.scss"
+              "projects/treepecan/src/styles.scss"
             ],
             "scripts": []
           }
@@ -110,5 +110,5 @@
       }
     }
   },
-  "defaultProject": "treebob"
+  "defaultProject": "treepecan"
 }
