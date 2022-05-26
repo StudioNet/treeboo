@@ -1,10 +1,13 @@
 export interface IHierarchyNodeBase {
   id: number;
   title: string;
-  children: IHierarchyNodeBase[];
+  next?: HierarchyNode<IHierarchyNodeBase>;
 }
 
-export type HierarchyNodeArray<T extends IHierarchyNodeBase> = ReadonlyArray<T>;
+export type HierarchyNode<T extends IHierarchyNodeBase> = {nodes: ReadonlyArray<T>, group?: string}
 
-// const arr: HierarchyNodeArray<IHierarchyNodeBase> = [];
-// arr[0].id;
+// const arr: HierarchyNode<IHierarchyNodeBase> = {
+//   nodes: [],
+//   group: 'level 0'
+// };
+// arr.nodes[0].id;

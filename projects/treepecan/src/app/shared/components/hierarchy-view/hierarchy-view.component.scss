@@ -1,0 +1,53 @@
+:host {
+  display: block;
+  height: unset;
+
+  &.level {
+    margin-left: 1rem;
+
+    div.node {
+      margin-left: 1rem;
+      line-height: 30px;
+
+      &.visible {
+        display: block;
+      }
+
+      &.unvisible {
+        display: none;
+      }
+
+      .children {
+        display: none;
+      }
+
+      main {
+        display: flex;
+        justify-content: flex-start;
+
+        i {
+          padding-right: 5px;
+          cursor: pointer;
+        }
+      }
+    }
+  }
+
+  .group-level {
+    display: flex;
+    align-content: space-between;
+    align-items: center;
+
+    i {
+      padding-right: 5px;
+      cursor: pointer;
+    }
+
+    .group-title {
+      display: inline-block;
+      font-size: 10pt;
+      font-weight: 600;
+      line-height: 2rem;
+    }
+  }
+}

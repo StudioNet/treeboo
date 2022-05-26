@@ -10,6 +10,9 @@ import { HierarchyViewComponent } from './components/hierarchy-view/hierarchy-vi
   ],
   imports: [
     CommonModule
+  ],
+  exports: [
+    HierarchyViewComponent
   ]
 })
 export class SharedModule { }

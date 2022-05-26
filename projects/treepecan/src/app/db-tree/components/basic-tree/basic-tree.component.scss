@@ -1,0 +1,8 @@
+:host {
+  width: 100%;
+
+  .view {
+    overflow-y: auto;
+    overflow-x: hidden;
+  }
+}

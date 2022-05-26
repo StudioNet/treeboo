@@ -1,0 +1,35 @@
+
+.icon-mid {
+  width: 24px;
+  height: 24px;
+}
+
+.connection {
+  @extend .icon-mid;
+  background-image: url('../../../assets/images/connection.svg');
+  background-size: contain;
+}
+
+.database {
+  @extend .icon-mid;
+  background-image: url('../../../assets/images/database.svg');
+  background-size: contain;
+}
+
+.schema {
+  @extend .icon-mid;
+  background-image: url('../../../assets/images/schema.svg');
+  background-size: contain;
+}
+
+.table {
+  @extend .icon-mid;
+  background-image: url('../../../assets/images/table.svg');
+  background-size: contain;
+}
+
+.column {
+  @extend .icon-mid;
+  background-image: url('../../../assets/images/column.svg');
+  background-size: contain;
+}
