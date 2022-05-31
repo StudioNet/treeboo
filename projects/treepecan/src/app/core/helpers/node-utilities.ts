@@ -1,8 +1,9 @@
 import { HierarchyNode, IHierarchyNodeBase } from "../../shared/model/hierarchy-node-base.type";
 import { faker } from '@faker-js/faker';
+import { IDbTreeHierarchyNode } from "../../db-tree/model/db-tree-hierarchy-node.interface";
 
 export type TitleGenerator = (name?: string) => string;
-export type ChildrenGenerator = (size: number) => HierarchyNode<IHierarchyNodeBase>;
+export type ChildrenGenerator<T extends IHierarchyNodeBase> = (size: number) => HierarchyNode<T>;
 
 function wrapNode(id: number, title: string, children?: HierarchyNode<IHierarchyNodeBase>): IHierarchyNodeBase {
   return {
@@ -12,12 +13,24 @@ function wrapNode(id: number, title: string, children?: HierarchyNode<IHierarchy
   };
 }
 
+function wrapDbNode(id: number, title: string, iconUrlClass: string, children?: HierarchyNode<IDbTreeHierarchyNode>): IDbTreeHierarchyNode {
+  return {
+    id,
+    title,
+    iconUrlClass,
+    next: children
+  };
+}
+
 function generateId() {
   return faker.datatype.number({min: 1, max: 999999});
 }
 
-function generateConnectionName(dbName: string): string {
-  return `${dbName} - ${faker.helpers.arrayElement(['test', 'dev', 'stage'])}`;
+function generateConnectionName(dbName?: string): string {
+  if (dbName)
+    return `${dbName} - ${faker.helpers.arrayElement(['test', 'dev', 'stage'])}`;
+  else
+    return `${faker.database.engine()} - ${faker.helpers.arrayElement(['test', 'dev', 'stage'])}`;
 }
 
 function generateDatabaseName(): string {
@@ -38,78 +51,34 @@ function generateColumnName(): string {
 
 export function createConnections<T extends IHierarchyNodeBase | IHierarchyNodeBase>(size: number, dbName: string = 'MySQL')
     : HierarchyNode<T | IHierarchyNodeBase> {
-        let connections: HierarchyNode<IHierarchyNodeBase>;
-        let nodes: IHierarchyNodeBase[] = [];
-        for (let i = 0; i < size; i++) {
-            const id = generateId()
-            const title = generateConnectionName(dbName);
-            const children = createDatabases(3);
-            nodes.push(wrapNode(id, title, children));
-        }
-        connections = {nodes: [...nodes], group: 'Connections'};
-        return connections;
+       return createNodes(3, generateConnectionName, createDatabases, 'Connections', 'connection');
 }
 
 export function createDatabases<T extends IHierarchyNodeBase | IHierarchyNodeBase>(size: number)
     : HierarchyNode<T | IHierarchyNodeBase> {
-      let connections: HierarchyNode<IHierarchyNodeBase>;
-      let nodes: IHierarchyNodeBase[] = [];
-      for (let i = 0; i < size; i++) {
-          const id = generateId();
-          const title = generateDatabaseName();
-          const children = createSchemas(2);
-          nodes.push(wrapNode(id, title, children));
-      }
-      connections = {nodes: [...nodes], group: 'Databases'};
-      return connections;
+      return createNodes(3, generateDatabaseName, createSchemas, 'Databases', 'database');
 }
 
 export function createSchemas<T extends IHierarchyNodeBase | IHierarchyNodeBase>(size: number)
     : HierarchyNode<T | IHierarchyNodeBase> {
-      let connections: HierarchyNode<IHierarchyNodeBase>;
-      let nodes: IHierarchyNodeBase[] = [];
-      for (let i = 0; i < size; i++) {
-          const id = generateId();
-          const title = generateSchemaName();
-          const children = createTables(15);
-          nodes.push(wrapNode(id, title, children));
-      }
-      connections = {nodes: [...nodes], group: 'Schemas'};
-      return connections;
+      return createNodes(5, generateSchemaName, createTables, 'Schemas', 'schema');
 }
 
 export function createTables<T extends IHierarchyNodeBase | IHierarchyNodeBase>(size: number)
     : HierarchyNode<T | IHierarchyNodeBase> {
-      let connections: HierarchyNode<IHierarchyNodeBase>;
-      let nodes: IHierarchyNodeBase[] = [];
-      for (let i = 0; i < size; i++) {
-          const id = generateId();
-          const title = generateTableName();
-          const children = createColumns(5);
-          nodes.push(wrapNode(id, title, children));
-      }
-      connections = {nodes: [...nodes], group: 'Tables'};
-      return connections;
+    return createNodes(10, generateTableName, createColumns, 'Tables', 'table');
 }
 
 export function createColumns<T extends IHierarchyNodeBase | IHierarchyNodeBase>(size: number)
     : HierarchyNode<T | IHierarchyNodeBase> {
-      let connections: HierarchyNode<IHierarchyNodeBase>;
-      let nodes: IHierarchyNodeBase[] = [];
-      for (let i = 0; i < size; i++) {
-          const id = generateId();
-          const title = generateColumnName();
-          nodes.push(wrapNode(id, title));
-      }
-      connections = {nodes: [...nodes], group: 'Columns'};
-      return connections;
+     return createNodes(10, generateColumnName, undefined, 'Columns', 'column');
 }
 
 export function createNodes
     <T extends IHierarchyNodeBase | IHierarchyNodeBase>(size: number,
       generateTitle: TitleGenerator,
-      generateChildren?: ChildrenGenerator,
-      groupName: string = 'Root') : HierarchyNode<T | IHierarchyNodeBase> {
+      generateChildren?: ChildrenGenerator<T>,
+      groupName: string = 'Root', iconClass: string = '') : HierarchyNode<T | IHierarchyNodeBase> {
       let readOnlyNodes: HierarchyNode<IHierarchyNodeBase>;
       let nodes: IHierarchyNodeBase[] = [];
       for (let i = 0; i < size; i++) {
@@ -119,7 +88,7 @@ export function createNodes
           if (generateChildren) {
             children = generateChildren(size);
           }
-          nodes.push(wrapNode(id, title, children));
+          nodes.push(wrapDbNode(id, title, iconClass, children as unknown as HierarchyNode<IDbTreeHierarchyNode>));
       }
       readOnlyNodes = {nodes: [...nodes], group: groupName};
       return readOnlyNodes;

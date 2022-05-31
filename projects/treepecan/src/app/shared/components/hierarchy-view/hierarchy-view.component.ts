@@ -1,24 +1,35 @@
-import { Component, OnInit, ChangeDetectionStrategy, Input, TemplateRef, HostBinding, ChangeDetectorRef } from '@angular/core';
-import { HierarchyNode, IHierarchyNodeBase } from '../../model/hierarchy-node-base.type';
+import {
+  Component,
+  OnInit,
+  ChangeDetectionStrategy,
+  Input,
+  TemplateRef,
+  HostBinding,
+} from '@angular/core';
+import {
+  HierarchyNode,
+  IHierarchyNodeBase,
+} from '../../model/hierarchy-node-base.type';
 
 @Component({
   selector: 'pcn-hierarchy-view',
   templateUrl: './hierarchy-view.component.html',
   styleUrls: ['./hierarchy-view.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class HierarchyViewComponent<T extends IHierarchyNodeBase> implements OnInit {
-  ngOnInit(): void {
-    console.log(this.root);
-  }
-
   @Input() root!: HierarchyNode<T> | undefined;
   @Input() nodeItemTemplate: TemplateRef<T> | null = null;
+  @Input() groupNodeItemTemplate: TemplateRef<T> | null = null;
 
-  public whenNodeExpanded: boolean = false;
-  public whenGroupExpanded: boolean = false;
+  public toggleLevelMaps: Map<number | string, boolean> = new Map();
 
-  constructor(private cdRef: ChangeDetectorRef) {}
+  constructor() {}
+
+  ngOnInit(): void {
+    this.mapCollapsedLevels();
+
+  }
 
   @HostBinding('class.level')
   public hasChildren(node: T): boolean {
@@ -29,16 +40,44 @@ export class HierarchyViewComponent<T extends IHierarchyNodeBase> implements OnI
     return this.nodeItemTemplate != null;
   }
 
-  public toggleGroup() {
-    this.whenGroupExpanded = !this.whenGroupExpanded;
-    // this.cdRef.markForCheck();
+  public toggleGroup(groupName: string = '') {
+    this.toggleLevelMaps.set(groupName, !this.toggleLevelMaps.get(groupName));
   }
 
   public toggleNode(node: T) {
-    this.whenNodeExpanded = !this.whenNodeExpanded;
+    this.toggleLevelMaps.set(node.id, !this.toggleLevelMaps.get(node.id));
   }
 
-  public isNodesVisible(): boolean {
-    return this.whenGroupExpanded || this.whenNodeExpanded;
+  public isGroupExpanded(groupName?: string): boolean | undefined {
+    if (groupName) {
+      return this.toggleLevelMaps.get(groupName);
+    }
+    return false;
+  }
+
+  public isNodeExpanded(node: T): boolean | undefined {
+    if (node) {
+      return this.toggleLevelMaps.get(node.id);
+    }
+    return false;
+  }
+
+  private mapCollapsedLevels() {
+    this.mapGroups();
+    this.mapNodes();
+  }
+
+  private mapGroups() {
+    if (this.root?.group) {
+      this.toggleLevelMaps.set(this.root.group, false);
+    }
+  }
+
+  private mapNodes() {
+    if (this.root?.nodes) {
+      this.root.nodes.forEach((node) => {
+        this.toggleLevelMaps.set(node.id, false);
+      });
+    }
   }
 }

@@ -2,34 +2,35 @@
 .icon-mid {
   width: 24px;
   height: 24px;
+  background-size: contain;
 }
 
+.connections,
 .connection {
   @extend .icon-mid;
   background-image: url('../../../assets/images/connection.svg');
-  background-size: contain;
 }
 
+.databases,
 .database {
   @extend .icon-mid;
   background-image: url('../../../assets/images/database.svg');
-  background-size: contain;
 }
 
+.schemas,
 .schema {
   @extend .icon-mid;
   background-image: url('../../../assets/images/schema.svg');
-  background-size: contain;
 }
 
+.tables,
 .table {
   @extend .icon-mid;
   background-image: url('../../../assets/images/table.svg');
-  background-size: contain;
 }
 
+.columns,
 .column {
   @extend .icon-mid;
   background-image: url('../../../assets/images/column.svg');
-  background-size: contain;
 }

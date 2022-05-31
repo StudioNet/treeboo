@@ -1,30 +1,39 @@
 <ng-template ngFor let-node let-i="index" [ngForOf]="root?.nodes">
-    <div *ngIf="root?.group && i===0" class="group-level">
-      <i (click)="toggleGroup()">{{ whenGroupExpanded ? '-' : '+'}}</i>
-      <p class="group-title">{{root?.group}}</p>
-    </div>
-    <ng-container *ngIf="hasChildren(node); else nodeViewTmpl">
-      <div class="node" [ngClass]="{'visible': isNodesVisible(), 'unvisible': !isNodesVisible()}">
-        <ng-container *ngIf="hasItemTemplate; else baseItem;" [ngTemplateOutlet]="nodeItemTemplate">
-        </ng-container>
-        <div class="children-vs">
+  <div *ngIf="root?.group && i===0" class="group-node">
+    <i (click)="toggleGroup(root?.group)" class="fas fa-xs"
+       [ngClass]="{'fa-chevron-right': !isGroupExpanded(root?.group), 'fa-chevron-down': isGroupExpanded(root?.group)}"></i>
+    <ng-container [ngTemplateOutlet]="groupNodeItemTemplate || baseGroupNode" [ngTemplateOutletContext]="{$implicit: root?.group}"></ng-container>
+    <!-- <p class="group-title">{{root?.group}}</p> -->
+  </div>
+  <ng-container *ngIf="hasChildren(node); else nodeViewTmpl">
+      <div class="node" [ngClass]="{'visible': isGroupExpanded(root?.group), 'unvisible': !isGroupExpanded(root?.group)}">
+        <main>
+          <i *ngIf="hasChildren(node)" (click)="toggleNode(node)" class="fas fa-xs"
+              [ngClass]="{'fa-chevron-right': !isNodeExpanded(node), 'fa-chevron-down': isNodeExpanded(node)}"></i>
+              <ng-container [ngTemplateOutlet]="nodeItemTemplate || baseNode" [ngTemplateOutletContext]="{$implicit: node}">
+              </ng-container>
+        </main>
+        <div [ngClass]="{'level-visible': isNodeExpanded(node), 'level-unvisible': !isNodeExpanded(node)}">
           <pcn-hierarchy-view [root]="node.next"
-                              [nodeItemTemplate]="nodeItemTemplate"></pcn-hierarchy-view>
+                              [nodeItemTemplate]="nodeItemTemplate" [groupNodeItemTemplate]="groupNodeItemTemplate"></pcn-hierarchy-view>
         </div>
       </div>
     </ng-container>
     <ng-template #nodeViewTmpl>
-      <div class="node" [ngClass]="{'visible': isNodesVisible(), 'unvisible': !isNodesVisible()}">
-        <ng-container *ngIf="hasItemTemplate; else baseItem;" [ngTemplateOutlet]="nodeItemTemplate">
-        </ng-container>
+      <div class="node" [ngClass]="{'visible': isGroupExpanded(root?.group), 'unvisible': !isGroupExpanded(root?.group)}">
+        <main>
+          <i *ngIf="hasChildren(node)" (click)="toggleNode(node)" class="fas fa-xs"
+              [ngClass]="{'fa-chevron-right': !isNodeExpanded(node), 'fa-chevron-down': isNodeExpanded(node)}"></i>
+          <ng-container [ngTemplateOutlet]="nodeItemTemplate || baseNode" [ngTemplateOutletContext]="{$implicit: node}">
+          </ng-container>
+        </main>
       </div>
     </ng-template>
-    <ng-template #baseItem>
-      <main>
-        <i (click)="toggleNode(node)">{{ whenNodeExpanded ? '-' : '+'}}</i>
-        <p>{{node.title}}</p>
-      </main>
-      <input type="hidden" [value]="node.id">
+    <ng-template #baseGroupNode>
+      <p class="group-title">{{root?.group}}</p>
+    </ng-template>
+    <ng-template #baseNode>
+      <p>{{node.title}}</p>
     </ng-template>
 </ng-template>
 

@@ -17,7 +17,11 @@
         display: none;
       }
 
-      .children {
+      .level-visible {
+        display: block;
+      }
+
+      .level-unvisible {
         display: none;
       }
 
@@ -28,12 +32,13 @@
         i {
           padding-right: 5px;
           cursor: pointer;
+          align-self: center;
         }
       }
     }
   }
 
-  .group-level {
+  .group-node {
     display: flex;
     align-content: space-between;
     align-items: center;
