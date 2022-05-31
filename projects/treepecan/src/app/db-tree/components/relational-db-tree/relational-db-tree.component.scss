@@ -4,6 +4,7 @@
   .view {
     overflow-y: auto;
     overflow-x: hidden;
+    margin-top: 4rem;
 
     i {
       &.custom-icon {
@@ -11,6 +12,15 @@
         width: 16px;
         height: 16px;
         align-self: center;
+      }
+    }
+
+    p {
+      &.custom-group-item {
+        display: inline-block;
+        font-size: 12pt;
+        font-weight: bolder;
+        line-height: 2rem;
       }
     }
   }

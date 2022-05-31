@@ -3,7 +3,6 @@
     <i (click)="toggleGroup(root?.group)" class="fas fa-xs"
        [ngClass]="{'fa-chevron-right': !isGroupExpanded(root?.group), 'fa-chevron-down': isGroupExpanded(root?.group)}"></i>
     <ng-container [ngTemplateOutlet]="groupNodeItemTemplate || baseGroupNode" [ngTemplateOutletContext]="{$implicit: root?.group}"></ng-container>
-    <!-- <p class="group-title">{{root?.group}}</p> -->
   </div>
   <ng-container *ngIf="hasChildren(node); else nodeViewTmpl">
       <div class="node" [ngClass]="{'visible': isGroupExpanded(root?.group), 'unvisible': !isGroupExpanded(root?.group)}">
@@ -20,7 +19,7 @@
       </div>
     </ng-container>
     <ng-template #nodeViewTmpl>
-      <div class="node" [ngClass]="{'visible': isGroupExpanded(root?.group), 'unvisible': !isGroupExpanded(root?.group)}">
+      <div class="node last" [ngClass]="{'visible': isGroupExpanded(root?.group), 'unvisible': !isGroupExpanded(root?.group)}">
         <main>
           <i *ngIf="hasChildren(node)" (click)="toggleNode(node)" class="fas fa-xs"
               [ngClass]="{'fa-chevron-right': !isNodeExpanded(node), 'fa-chevron-down': isNodeExpanded(node)}"></i>
